@@ -13,10 +13,21 @@ graph = Graph(
 
 def from_matrix_to_graph(matrix_path):
     
+    """
+    version 1.1 add matrix mitre id
+    """
+    
     # initialise the matrix
     fs = FileSystemSource(matrix_path)
     matrix = Matrix(obj_dict=None)
-    matrix.name = matrix_path.split('/')[2].split('-')[0]
+    matrix_name = matrix_path.split('/')[2].split('-')[0]
+    
+    matrix.name = matrix_name
+    
+    if matrix_name == "pre":
+        matrix.mitre_id = "MT0001"
+    elif matrix_name == "enterprise":
+        matrix.mitre_id = "MT0002"
     m_node = matrix.store(graph, None)
     
     # get and store all software of a matrix
