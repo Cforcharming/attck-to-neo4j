@@ -5,7 +5,7 @@ from py2neo import Graph
 from time import time
 
 graph = Graph(
-    "http://localhost:7474",
+    "bolt://localhost:7687",
     username="neo4j",
     password="attck"
 )
@@ -14,7 +14,7 @@ graph = Graph(
 def from_matrix_to_graph(matrix_path):
     
     """
-    version 1.1 add matrix mitre id
+    version 1.2
     """
     
     # initialise the matrix
@@ -26,8 +26,13 @@ def from_matrix_to_graph(matrix_path):
     
     if matrix_name == "pre":
         matrix.mitre_id = "MT0001"
+    
     elif matrix_name == "enterprise":
         matrix.mitre_id = "MT0002"
+     
+    elif matrix_name == "mobile":
+        matrix.mitre_id = "MT0003"
+        
     m_node = matrix.store(graph, None)
     
     # get and store all software of a matrix
@@ -68,10 +73,10 @@ def from_matrix_to_graph(matrix_path):
                 m_obj.store(graph, te_node)
 
 
-if __name__ == '__main__':
+def db_init():
     
     t1 = time()
     from_matrix_to_graph('./cti/enterprise-attack')
     from_matrix_to_graph('./cti/pre-attack')
-    # from_matrix_to_graph('./cti/mobile-attack')
+    from_matrix_to_graph('./cti/mobile-attack')
     print(time()-t1, 'seconds')
